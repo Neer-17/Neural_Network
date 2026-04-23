@@ -17,9 +17,11 @@ def process_img(img):
     crop = thresh_img[y:y+h,x:x+w]
     pad_img = cv2.copyMakeBorder(crop,int(0.2*h),int(0.2*h),int(0.2*w),int(0.2*w),cv2.BORDER_CONSTANT,value=[0,0,0])
     img_array = cv2.resize(pad_img,(28,28),interpolation=cv2.INTER_AREA)
-    fin_img = cv2.imwrite(f'output.jpg',img_array)
-    norm_array = img_array/255
+    _, thresh_img2 = cv2.threshold(img_array,127,255,cv2.THRESH_BINARY)
+    fin_img = cv2.imwrite(f'output.jpg',thresh_img2)
+    norm_array = thresh_img2/255
     return norm_array.flatten()
+
 def guess(canvas_result):
     if canvas_result.json_data is not None:
         objects = canvas_result.json_data.get("objects")
@@ -30,14 +32,13 @@ def guess(canvas_result):
             n_net = Neural()
             n_net.load_weights()
             result = n_net.forward(array)
-            result = result.round()
-            # print(result)
+            result = (result.round()).tolist()[0]
+            st.write(f"Is your number {result.index(max(result))} ?")
             print(result)
-            # st.write(result)
-            # st.write(max(result))
+            
         else:
             st.info("Canvas is currently empty.")
-            pass
+            
 center = st.container(border=True,width='stretch',height='content')
 with center:
     """## Draw a number"""
@@ -46,3 +47,4 @@ with center:
     guess(canvas_result)
 
 
+    
