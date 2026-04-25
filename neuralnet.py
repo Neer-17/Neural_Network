@@ -10,16 +10,16 @@ class Neural:
     self.layers_z = [] #Pre-ReLU values
 
     #Input for hidden layers
-    self.weights.append(0.1 * np.random.randn(input_size,hidden_layers[0]))
+    self.weights.append(np.sqrt(2 / input_size) * np.random.randn(input_size,hidden_layers[0]))
     self.biases.append(np.zeros((1,hidden_layers[0])))
 
     #Hidden Layers Network
     for i in range(len(hidden_layers)-1):
-      self.weights.append(0.1 * np.random.randn(hidden_layers[i],hidden_layers[i+1]))
+      self.weights.append(np.sqrt(2 /hidden_layers[i]) * np.random.randn(hidden_layers[i],hidden_layers[i+1]))
       self.biases.append(np.zeros((1,hidden_layers[i+1])))
 
     #Hidden layers to Output
-    self.weights.append(0.1 * np.random.randn(hidden_layers[-1],output_size))
+    self.weights.append(np.sqrt(2 / hidden_layers[-1]) * np.random.randn(hidden_layers[-1],output_size))
     self.biases.append(np.zeros((1,output_size)))
 
   def forward(self,inputs):
