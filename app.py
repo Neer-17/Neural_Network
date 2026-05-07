@@ -1,5 +1,4 @@
 import cv2
-import torch
 import numpy as np
 import streamlit as st
 from neuralnet import Neural
@@ -13,8 +12,7 @@ st.space('medium')
 def load_model():
     """Loads the Neural network."""
     n_net = Neural()
-    state_dict = torch.load('model_emnist.pth', weights_only=True)
-    n_net.load_state_dict(state_dict)
+    n_net.load_weights()
     return n_net
 
 model = load_model()
